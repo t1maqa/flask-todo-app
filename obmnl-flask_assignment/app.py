@@ -41,7 +41,7 @@ def edit_transaction(transaction_id):
     if request.method == 'POST':
         # Extract the updated values from the form fields
         date = request.form['date']
-        amount = float(request.form['amount'])
+        amount = int(request.form['amount'])
 
         # Find the transaction with the matching ID and update its values
         for transaction in transactions:
@@ -85,6 +85,13 @@ def search_transactions():
 
     # Render the search form template for GET requests
     return render_template('search.html')
+
+@app.route('/balance')
+def total_balance():
+    total_balance = sum(transaction['amount'] for transaction in transactions)
+    total_balance_str = f"{total_balance}"
+    return render_template('transactions.html', transactions=transactions, total_balance=total_balance_str)
+
 
 # Run the Flask app
 if __name__ == "__main__":
